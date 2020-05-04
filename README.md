@@ -16,7 +16,7 @@ yarn add jest-amp -D
 ```js
 import { amp, toBeValidAmpHtml } from 'jest-amp';
 
-expect.extend(toBeValidAmpHtml);
+expect.extend({ toBeValidAmpHtml });
 
 it('is valid AMP HTML', async () => {
   const html = '<div>Hello, World</div>';
@@ -33,7 +33,7 @@ be used to inject any required async script elements into the document head.
 ```js
 import { amp, toBeValidAmpHtml } from 'jest-amp';
 
-expect.extend(toBeValidAmpHtml);
+expect.extend({ toBeValidAmpHtml });
 
 const ampMatcherOptions = {
   scripts: [
