@@ -26,10 +26,9 @@ describe('jest-amp', () => {
     });
 
     it('does not pass when there are validation errors', () => {
-      const { pass, message } = toBeValidAmpHtml({ result: failingResult, body });
+      const { pass } = toBeValidAmpHtml({ result: failingResult, body });
 
       expect(pass).toEqual(false);
-      expect(message()).toMatchSnapshot();
     });
 
     it('reports all errors', () => {
