@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jest-amp toBeValidAmpHtml does not pass when there are validation errors 1`] = `
+"[2mexpect([22m[31mreceived[39m[2m).toBeValidAmpHtml([22m[32mexpected[39m[2m)[22m
+
+Expected valid AMP HTML:
+
+[31m\\"No good\\"[39m
+http://example.com/no-good
+
+[31m\\"Also no good\\"[39m
+http://example.com/also-no-good
+
+----------
+
+<div>
+  Hello, World!
+</div>
+
+----------"
+`;
