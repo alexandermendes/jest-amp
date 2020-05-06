@@ -33,7 +33,7 @@ export const amp = async (body, {
   wrap = true,
 } = {}) => {
   const head = scripts.map((attributes) => (
-    `<script async ${Object.keys(attributes).map(((key) => `${key}="${attributes[key]}"`)).join(' ')}></script>`
+    `<script ${Object.keys(attributes).map(((key) => `${key}="${attributes[key]}"`)).join(' ')}></script>`
   )).join('\n');
 
   const html = wrap ? ampBoilerplate({ head, body }) : body;

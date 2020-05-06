@@ -26,6 +26,7 @@ describe('jest-amp', () => {
       const { result } = await amp(markup, {
         scripts: [
           {
+            async: true,
             'custom-element': 'amp-list',
             src: 'https://cdn.ampproject.org/v0/amp-list-0.1.js',
           },

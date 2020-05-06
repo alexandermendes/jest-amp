@@ -34,7 +34,7 @@ The `amp` function accepts an options object as the second argument.
 
 ### `script`
 
-Inject any required async script elements into the document head.
+Inject any required script elements into the document head.
 
 ```js
 import { amp } from 'jest-amp';
@@ -42,6 +42,7 @@ import { amp } from 'jest-amp';
 const ampMatcherOptions = {
   scripts: [
     {
+      async: true,
       'custom-element': 'amp-list',
       src: 'https://cdn.ampproject.org/v0/amp-list-0.1.js',
     },
