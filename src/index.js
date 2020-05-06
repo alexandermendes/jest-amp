@@ -7,6 +7,16 @@ import ampBoilerplate from './amp-boilerplate';
 const lineBreak = '\n\n';
 const horizontalLine = '----------';
 
+let validator;
+
+const getValidator = async () => {
+  if (!validator) {
+    validator = await ampHtmlValidator.getInstance();
+  }
+
+  return validator;
+};
+
 const formatErrors = (errors) => {
   if (errors.length === 0) {
     return [];
@@ -20,18 +30,17 @@ const formatErrors = (errors) => {
 
 export const amp = async (body, {
   scripts = [],
-}) => {
-  const validator = await ampHtmlValidator.getInstance();
-
+  wrap = true,
+} = {}) => {
   const head = scripts.map((attributes) => (
     `<script async ${Object.keys(attributes).map(((key) => `${key}="${attributes[key]}"`)).join(' ')}></script>`
   )).join('\n');
 
-  const html = ampBoilerplate({ head, body });
+  const html = wrap ? ampBoilerplate({ head, body }) : body;
 
   return {
     body,
-    result: validator.validateString(html),
+    result: (await getValidator()).validateString(html),
   };
 };
 
