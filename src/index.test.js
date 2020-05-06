@@ -94,5 +94,13 @@ describe('jest-amp', () => {
       expect(output).toMatch(/.*No good.*/);
       expect(output).toMatch(/.*Also no good.*/);
     });
+
+    it('throws clearer errors if AMP validator is unavailable', () => {
+      const validationError = new Error('Stuff went wrong');
+
+      expect(() => toBeValidAmpHtml({ validationError })).toThrow(
+        /.*ensure you have an active internet connection.*/,
+      );
+    });
   });
 });

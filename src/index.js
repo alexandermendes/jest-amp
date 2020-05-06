@@ -38,14 +38,37 @@ export const amp = async (body, {
 
   const html = wrap ? ampBoilerplate({ head, body }) : body;
 
+  let result;
+  let validationError;
+
+  try {
+    result = (await getValidator()).validateString(html);
+  } catch (err) {
+    validationError = err;
+  }
+
   return {
     body,
-    result: (await getValidator()).validateString(html),
+    result,
+    validationError,
   };
 };
 
-export const toBeValidAmpHtml = ({ result, body }) => {
+export const toBeValidAmpHtml = ({
+  result,
+  body,
+  validationError,
+}) => {
   const { errors } = (result || {});
+
+  if (validationError) {
+    throw new Error([
+      'Something went wrong while running the AMP validation. ',
+      'Please ensure you have an active internet connection.',
+      lineBreak,
+      validationError.message,
+    ].join(''));
+  }
 
   if (typeof errors === 'undefined') {
     throw new Error('No error report found in AMP validation results');
