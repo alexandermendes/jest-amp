@@ -60,7 +60,7 @@ export const toBeValidAmpHtml = ({ result, body }) => {
     }
 
     return [
-      matcherHint('.toBeValidAmpHtml'),
+      matcherHint(`.${toBeValidAmpHtml.name}`),
       'Expected valid AMP HTML:',
       formatedErrors,
       horizontalLine,
