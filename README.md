@@ -1,5 +1,7 @@
 # jest-amp
 
+[![npm version](https://badge.fury.io/js/jest-amp.svg)](https://badge.fury.io/js/jest-amp)
+
 A [Jest](https://jestjs.io/) matcher to validate [AMP](https://amp.dev/) markup.
 
 This matcher works by wrapping HTML snippets in the minimum valid AMP HTML
