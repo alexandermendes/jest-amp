@@ -28,13 +28,25 @@ const formatErrors = (errors) => {
   ].join('\n')).join(lineBreak);
 };
 
+const getHead = (scripts) => {
+  const head = scripts.map((attributes) => (
+    `<script ${Object
+      .keys(attributes)
+      .map(((key) => `${key}="${attributes[key] === true ? '' : attributes[key]}"`))
+      .join(' ')}
+    >
+    </script>`
+  )).join('\n');
+
+  return head;
+};
+
 export const amp = async (body, {
   scripts = [],
+  scriptTags = [],
   wrap = true,
 } = {}) => {
-  const head = scripts.map((attributes) => (
-    `<script ${Object.keys(attributes).map(((key) => `${key}="${attributes[key]}"`)).join(' ')}></script>`
-  )).join('\n');
+  const head = getHead([...scripts, ...scriptTags]);
 
   const html = wrap ? ampBoilerplate({ head, body }) : body;
 

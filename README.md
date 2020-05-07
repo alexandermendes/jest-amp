@@ -56,6 +56,8 @@ it('is valid AMP HTML', async () => {
 });
 ```
 
+Note that you can also use the alias `scriptTags`.
+
 ### `wrap`
 
 Don't wrap the markup being tested in a boilerplate AMP document.
@@ -69,3 +71,9 @@ it('is valid AMP HTML', async () => {
   expect(await amp(html, { wrap: false })).toBeValidAmpHtml();
 });
 ```
+
+## Examples
+
+Examples of tests written with Enzyme and React Testing Library can be found in
+the [examples](https://github.com/alexandermendes/jest-amp/tree/master/examples)
+directory.
