@@ -28,25 +28,30 @@ const formatErrors = (errors) => {
   ].join('\n')).join(lineBreak);
 };
 
-const getHead = (scripts) => {
-  const head = scripts.map((attributes) => (
-    `<script ${Object
-      .keys(attributes)
-      .map(((key) => `${key}="${attributes[key] === true ? '' : attributes[key]}"`))
-      .join(' ')}
-    >
-    </script>`
-  )).join('\n');
+const extractTags = (tags) => Object
+  .keys(tags)
+  .map(((key) => `${key}="${tags[key] === true ? '' : tags[key]}"`))
+  .join(' ');
 
-  return head;
-};
+const getHead = (scripts, meta) => [
+  ...scripts.map((attributes) => (
+    `<script ${extractTags(attributes)}>
+    </script>`
+  )),
+  ...meta.map((attributes) => (
+    `<meta ${extractTags(attributes)}>
+    </meta>`
+  )),
+].join('\n');
 
 export const amp = async (body, {
   scripts = [],
+  meta = [],
   scriptTags = [],
+  metaTags = [],
   wrap = true,
 } = {}) => {
-  const head = getHead([...scripts, ...scriptTags]);
+  const head = getHead([...scripts, ...scriptTags], [...meta, ...metaTags]);
 
   const html = wrap ? ampBoilerplate({ head, body }) : body;
 

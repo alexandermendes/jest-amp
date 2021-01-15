@@ -1,6 +1,16 @@
+import ampHtmlValidator from 'amphtml-validator';
 import { amp, toBeValidAmpHtml } from '.';
 
 describe('jest-amp', () => {
+  let validator;
+
+  beforeAll(async () => {
+    validator = await ampHtmlValidator.getInstance();
+
+    // Return a set instance of the validator so we can spy on it later
+    jest.spyOn(ampHtmlValidator, 'getInstance').mockImplementation(() => validator);
+  });
+
   describe('amp', () => {
     it('returns the expected result for valid AMP', async () => {
       const markup = '<div />';
@@ -21,10 +31,11 @@ describe('jest-amp', () => {
       expect(errCodes).toContain('MISSING_REQUIRED_EXTENSION');
     });
 
-    it('injects script tags', async () => {
-      const markup = '<amp-list>';
-      const { result } = await amp(markup, {
-        scripts: [
+    it.each(['scripts', 'scriptTags'])('injects script tags using the "%s" option', async (key) => {
+      const validateStringSpy = jest.spyOn(validator, 'validateString');
+
+      await amp('<amp-list>', {
+        [key]: [
           {
             async: true,
             'custom-element': 'amp-list',
@@ -33,9 +44,26 @@ describe('jest-amp', () => {
         ],
       });
 
-      const errCodes = result.errors.map((err) => err.code);
+      expect(validateStringSpy).toHaveBeenCalledWith(expect.stringContaining(
+        '<script async="" custom-element="amp-list" src="https://cdn.ampproject.org/v0/amp-list-0.1.js">',
+      ));
+    });
 
-      expect(errCodes).not.toContain('MISSING_REQUIRED_EXTENSION');
+    it.each(['meta', 'metaTags'])('injects meta tags using the "%s" option', async (key) => {
+      const validateStringSpy = jest.spyOn(validator, 'validateString');
+
+      await amp('<amp-consent layout="nodisplay">', {
+        [key]: [
+          {
+            name: 'amp-consent-blocking',
+            content: 'amp-analytics,amp-ad',
+          },
+        ],
+      });
+
+      expect(validateStringSpy).toHaveBeenCalledWith(expect.stringContaining(
+        '<meta name="amp-consent-blocking" content="amp-analytics,amp-ad">',
+      ));
     });
 
 
